@@ -18,9 +18,10 @@ collection = db['paper01']
 print(pyspark.__version__)
 spark = SparkSession.builder \
     .appName("Word2VecExample") \
-    .config("spark.executor.memory", "4g") \
-    .config("spark.driver.memory", "2g") \
     .getOrCreate()
+    #.config("spark.executor.memory", "4g") \
+    #.config("spark.driver.memory", "2g") \
+    
 
 #spark.sparkContext.setLogLevel("INFO")  # 로깅 수준을 INFO로 설정
 
