@@ -5,8 +5,7 @@ import pyspark
 from pyspark.ml.feature import Word2Vec
 from pyspark.sql import SparkSession
 from pyspark.sql import Row
-from pyspark.sql.functions import udf
-from pyspark.sql.types import StructType, StructField, StringType, ArrayType
+from pyspark.sql.types import *
 from pyspark.ml.feature import Tokenizer
 from pyspark.ml import Pipeline
 from pyspark.sql.functions import col
