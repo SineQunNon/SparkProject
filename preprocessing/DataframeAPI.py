@@ -17,7 +17,7 @@ from pyspark.sql.functions import col, udf
 
 client = mc('mongodb://10.100.54.129:27017')
 db = client['PaperAPI']
-collection = db['paper01']
+collection = db['paper02']
 
 # Spark 세션 초기화
 print(pyspark.__version__)
