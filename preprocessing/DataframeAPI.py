@@ -160,7 +160,7 @@ def main():
     pca_result = pca.fit(emb_features_df).transform(emb_features_df).select("pca_features")
 
     #Kmeans processing
-    kmeans = KMeans().setK(3).setSeed(1).setFeaturesCol("pca_features")
+    kmeans = KMeans().setK(4).setSeed(1).setFeaturesCol("pca_features")
     kmeans_model = kmeans.fit(pca_result)
 
     result_transformed = kmeans_model.transform(pca_result).select("pca_features", "prediction")
