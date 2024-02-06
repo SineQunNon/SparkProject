@@ -22,7 +22,7 @@ collection = db['paper01']
 # Spark 세션 초기화
 print(pyspark.__version__)
 spark = SparkSession.builder \
-    .appName("Word2VecExample") \
+    .appName("DataframeProcessing") \
     .getOrCreate()
     #.config("spark.executor.memory", "4g") \
     #.config("spark.driver.memory", "2g") \
@@ -160,12 +160,14 @@ def main():
     pca_result = pca.fit(emb_features_df).transform(emb_features_df).select("pca_features")
 
     #Kmeans processing
-    kmeans = KMeans().setK(3).setSeed(1)
+    kmeans = KMeans().setK(3).setSeed(1).setFeaturesCol("pca_features")
     kmeans_model = kmeans.fit(pca_result)
 
-    result_transformed = kmeans_model.transform(emb_features_df).select("pca_features", "prediction")
+    result_transformed = kmeans_model.transform(pca_result).select("pca_features", "prediction")
     result_transformed.show()
 
+    #predictions = kmeans_model.transform(pca_result)
+    centers = kmeans_model.clusterCenters()
     #vector_to_list_udf = udf(lambda x : list(x.toArray()), DoubleType())
     #cluster 환경에서는 udf 적용이 안되나?
 
