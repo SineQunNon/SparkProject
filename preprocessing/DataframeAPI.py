@@ -154,7 +154,7 @@ def main():
     emb_features_df = vecAssembler.transform(emb_df).select("features")
 
     #PCA processing
-    pca = PCA(k=2, inputCol = "features")
+    pca = PCA(k=3, inputCol = "features")
     pca.setOutputCol("pca_features")
 
     pca_result = pca.fit(emb_features_df).transform(emb_features_df).select("pca_features")
@@ -168,6 +168,7 @@ def main():
 
     #predictions = kmeans_model.transform(pca_result)
     centers = kmeans_model.clusterCenters()
+    print(centers)
     #vector_to_list_udf = udf(lambda x : list(x.toArray()), DoubleType())
     #cluster 환경에서는 udf 적용이 안되나?
 
