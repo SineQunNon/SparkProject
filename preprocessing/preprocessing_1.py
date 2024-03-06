@@ -163,11 +163,35 @@ def main():
     kmeans = KMeans().setK(4).setSeed(1).setFeaturesCol("pca_features")
     kmeans_model = kmeans.fit(pca_result)
 
+    centers = kmeans_model.clusterCenters()
+
     result_transformed = kmeans_model.transform(pca_result).select("pca_features", "prediction")
     result_transformed.show()
+    result_pd = result_transformed.toPandas()
+
+    # 시각화를 위해 pca_features의 x 및 y 좌표 추출
+    x_values = result_pd["pca_features"].apply(lambda v: v[0])
+    y_values = result_pd["pca_features"].apply(lambda v: v[1])
+
+    # 클러스터 할당 결과에 따라 색상 지정
+    colors = np.array(result_pd["prediction"])
+
+    # 클러스터 중심 좌표 추출
+    centers_x = [center[0] for center in centers]
+    centers_y = [center[1] for center in centers]
+
+    # 산점도 그리기
+    plt.scatter(x_values, y_values, c=colors, cmap='viridis', alpha=0.5)
+    plt.scatter(centers_x, centers_y, c='red', marker='X', label='Cluster Centers')
+    plt.xlabel("PCA Feature 1")
+    plt.ylabel("PCA Feature 2")
+    plt.title("KMeans Clustering Results")
+    plt.legend()
+    plt.show()
+
 
     #predictions = kmeans_model.transform(pca_result)
-    centers = kmeans_model.clusterCenters()
+    
     print(centers)
     #vector_to_list_udf = udf(lambda x : list(x.toArray()), DoubleType())
     #cluster 환경에서는 udf 적용이 안되나?
